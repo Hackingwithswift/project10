@@ -9,17 +9,21 @@
 import UIKit
 
 class ViewController: UICollectionViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    var people = [Person]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.title = "HAnking with Swift"
+        self.title = "Hacking with Swift"
+        
+        
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        //return people.count
+        return people.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -27,7 +31,16 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             // we failed to get a PersonCell – bail out!
             fatalError("Unable to dequeue PersonCell.")
         }
-
+        let person = people[indexPath.item]
+        cell.name.text = person.name
+        print("the name is \(person.name)")
+        let path = getDocumentsDirectory().appendingPathComponent(person.image)
+        cell.imageView.image = UIImage(contentsOfFile: path.path)
+        
+        cell.imageView.layer.borderColor = UIColor(white: 0, alpha: 0.3).cgColor
+        cell.imageView.layer.borderWidth = 2
+        cell.imageView.layer.cornerRadius = 3
+        cell.layer.cornerRadius = 7
         // if we're still here it means we got a PersonCell, so we can return it
         return cell
     }
@@ -53,14 +66,38 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             try?jpegData.write(to: imagepath)
         }
         
+        let person = Person(name: "Unknow", image: imageName)
+        people.append(person)
+        collectionView.reloadData()
+        
+        
+        
         dismiss(animated: true)
-   
+        
     }
-
+    
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let person = people[indexPath.item]
+        
+        let ac = UIAlertController(title: "Rename person", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
+            guard let newName = ac?.textFields?[0].text else { return }
+            person.name = newName
+            
+            self?.collectionView.reloadData()
+        })
+        
+        present(ac, animated: true)
+        
+    }
 }
 
