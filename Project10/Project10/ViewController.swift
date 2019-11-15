@@ -16,12 +16,23 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.title = "Hacking with Swift"
-        
-
-        VNsUserDefaults()
-        
-        
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
+      //Fetchig the Defaiultd values from data base;
+        
+        let defaults = UserDefaults.standard
+        if let savedPeople = defaults.object(forKey: "people")as? Data{
+            if let decodedPeople = try?
+                NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedPeople)as? [Person]{
+                people = decodedPeople
+                
+                print("the decoded array from NSUserdefaults is: \(people)")
+            }
+        }
+        
+        
+        
+        VNsUserDefaults()
+
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -72,6 +83,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         
         let person = Person(name: "Unknow", image: imageName)
         people.append(person)
+        self.save()
         collectionView.reloadData()
         
         
@@ -96,7 +108,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
             guard let newName = ac?.textFields?[0].text else { return }
             person.name = newName
-            
+            self?.save()
             self?.collectionView.reloadData()
         })
         
@@ -147,7 +159,14 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         
         
     }
-    
+    func save() {
+        if let saveData = try? NSKeyedArchiver.archivedData(withRootObject: people, requiringSecureCoding: false){
+            let defaults = UserDefaults.standard
+            defaults.set(saveData, forKey: "people")
+            
+        }
+         
+    }
     
     
 }
