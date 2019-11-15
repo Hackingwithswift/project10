@@ -3,7 +3,6 @@
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,7 +14,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oZc-Jc-qYM">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oZc-Jc-qYM">
                             <size key="itemSize" width="140" height="180"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -23,27 +22,34 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Person" id="Q5T-fU-Jkn" customClass="PersonalCell" customModule="Project10" customModuleProvider="target">
-                                <rect key="frame" x="10" y="10" width="140" height="180"/>
+                                <rect key="frame" x="10" y="10" width="190" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="rKf-ks-zod">
-                                    <rect key="frame" x="0.0" y="0.0" width="140" height="180"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="190" height="180"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xt7-8k-qe7">
-                                            <rect key="frame" x="10" y="10" width="120" height="120"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xt7-8k-qe7">
+                                            <rect key="frame" x="10" y="10" width="120" height="139.66666666666666"/>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ASCDSVAVFDS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8gp-yK-mks">
-                                            <rect key="frame" x="10" y="134" width="120" height="40"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VEERA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8gp-yK-mks">
+                                            <rect key="frame" x="10" y="159.66666666666666" width="120" height="20.333333333333343"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                             <color key="textColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                </collectionViewCellContentView>
+                                </view>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <size key="customSize" width="140" height="180"/>
+                                <constraints>
+                                    <constraint firstItem="8gp-yK-mks" firstAttribute="top" secondItem="Xt7-8k-qe7" secondAttribute="bottom" constant="10" id="2P6-zX-nFr"/>
+                                    <constraint firstItem="Xt7-8k-qe7" firstAttribute="top" secondItem="Q5T-fU-Jkn" secondAttribute="top" constant="10" id="3cz-HT-woA"/>
+                                    <constraint firstAttribute="bottom" secondItem="8gp-yK-mks" secondAttribute="bottom" id="6un-vl-PPG"/>
+                                    <constraint firstAttribute="trailing" secondItem="8gp-yK-mks" secondAttribute="trailing" constant="10" id="79z-be-OQT"/>
+                                    <constraint firstItem="Xt7-8k-qe7" firstAttribute="leading" secondItem="Q5T-fU-Jkn" secondAttribute="leading" constant="10" id="Ff8-wY-GQc"/>
+                                    <constraint firstItem="8gp-yK-mks" firstAttribute="leading" secondItem="Q5T-fU-Jkn" secondAttribute="leading" constant="10" id="Gtu-Vu-ThU"/>
+                                    <constraint firstAttribute="trailing" secondItem="Xt7-8k-qe7" secondAttribute="trailing" constant="10" id="u4Y-KQ-OQg"/>
+                                </constraints>
+                                <size key="customSize" width="190" height="180"/>
                                 <connections>
                                     <outlet property="imageView" destination="Xt7-8k-qe7" id="GL2-WS-3dU"/>
                                     <outlet property="name" destination="8gp-yK-mks" id="dje-yC-1gQ"/>

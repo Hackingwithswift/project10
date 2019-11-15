@@ -11,11 +11,14 @@ import UIKit
 class ViewController: UICollectionViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var people = [Person]()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.title = "Hacking with Swift"
         
+
+        VNsUserDefaults()
         
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
@@ -52,6 +55,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         picker.delegate = self
         present(picker, animated: true)
         
+
         
     }
     
@@ -99,5 +103,52 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         present(ac, animated: true)
         
     }
+    
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        let nbCol = 2
+
+        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+        let totalSpace = flowLayout.sectionInset.left
+            + flowLayout.sectionInset.right
+            + (flowLayout.minimumInteritemSpacing * CGFloat(nbCol - 1))
+        let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(nbCol))
+        return CGSize(width: size, height: size)
+    }
+    
+    func VNsUserDefaults() {
+        
+        print("Called the NSuser Defaults")
+        let defaults = UserDefaults.standard
+
+        defaults.set(25, forKey: "age")
+        defaults.set(true, forKey: "UseTouchID")
+        defaults.set(CGFloat.pi, forKey: "Pi")
+        
+        defaults.set("veera", forKey: "Name")
+        defaults.set(Date(), forKey: "LastRun")
+
+        let array = ["Hello", "World"]
+        defaults.set(array, forKey: "SavedArray")
+        
+        let dict = ["Name":"veera", "Country": "US"]
+        defaults.set(dict, forKey: "SaveDict")
+        
+        
+        
+        let fetchDict = UserDefaults.standard.dictionary(forKey: "SaveDict")
+        print(fetchDict ?? (Any).self)
+        let fetchArray = UserDefaults.standard.array(forKey: "SavedArray")
+        print("The arrary is : \(String(describing: fetchArray))")
+        
+        
+        
+    }
+    
+    
+    
 }
 
