@@ -16,12 +16,25 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.title = "Hacking with Swift"
-        
-
-        VNsUserDefaults()
-        
-        
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
+        
+        let defaults = UserDefaults.standard
+        if let savedPeople = defaults.object(forKey: "people")as? Data {
+            let jsonDecoder = JSONDecoder()
+            do{
+                people = try jsonDecoder.decode([Person].self, from: savedPeople)
+                
+                print("get the data is: \(people)")
+            } catch{
+                print("Fetching the people data is failed")
+            }
+            
+        }
+        
+        
+        
+        VNsUserDefaults()
+
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -54,9 +67,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         picker.allowsEditing = true
         picker.delegate = self
         present(picker, animated: true)
-        
 
-        
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -72,10 +83,8 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         
         let person = Person(name: "Unknow", image: imageName)
         people.append(person)
+        save()
         collectionView.reloadData()
-        
-        
-        
         dismiss(animated: true)
         
     }
@@ -96,7 +105,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
             guard let newName = ac?.textFields?[0].text else { return }
             person.name = newName
-            
+            self?.save()
             self?.collectionView.reloadData()
         })
         
@@ -108,9 +117,9 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+        
         let nbCol = 2
-
+        
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
         let totalSpace = flowLayout.sectionInset.left
             + flowLayout.sectionInset.right
@@ -123,21 +132,19 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         
         print("Called the NSuser Defaults")
         let defaults = UserDefaults.standard
-
+        
         defaults.set(25, forKey: "age")
         defaults.set(true, forKey: "UseTouchID")
         defaults.set(CGFloat.pi, forKey: "Pi")
         
         defaults.set("veera", forKey: "Name")
         defaults.set(Date(), forKey: "LastRun")
-
+        
         let array = ["Hello", "World"]
         defaults.set(array, forKey: "SavedArray")
         
         let dict = ["Name":"veera", "Country": "US"]
         defaults.set(dict, forKey: "SaveDict")
-        
-        
         
         let fetchDict = UserDefaults.standard.dictionary(forKey: "SaveDict")
         print(fetchDict ?? (Any).self)
@@ -148,7 +155,17 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         
     }
     
-    
+    func save() {
+        let jsonEncoder = JSONEncoder()
+        
+        if let saveData = try? jsonEncoder.encode(people){
+            
+            let defaults = UserDefaults.standard
+            defaults.set(saveData, forKey: "people")
+        } else{
+            print("saving the people data is failed")
+        }
+        
+    }
     
 }
-
